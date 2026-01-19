@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+                https://jakarta.ee/xml/ns/persistence
+                https://jakarta.ee/xml/ns/persistence/persistence_3_2.xsd" version="3.2">
+
+<persistence-unit name="PersistenciaInstituto" transaction-type="RESOURCE_LOCAL">
+
+<!-- En JPA solo hay dos valores válidos:
+				 	RESOURCE_LOCAL:  Nuestra aplicación gestiona las transacciones (mediante EntityTransaction)
+					JTA: es el contenedor o servidor quien las gestiona 
+-->
+
+<!-- Aquí debemos indicar las clases a persistir que dispondrán de las correspondientes anotiaciones JPA -->
+<class>es.ciudadescolar.dominio.modelo.Alumno</class>
+
+
+<properties>
+
+			<!-- Proveedor JPA entre otros:
+			  <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+			-->
+			<property name="jakarta.persistence.provider" value="org.hibernate.jpa.HibernatePersistenceProvider"/>
+
+			<!-- En Hibernate 6/7 es mejor no habilitar esto pues con org.hibernate.SQL 
+				y org.hibernate.orm.jdbc.bind ya recuperamos todos los SQL 
+			<property name="hibernate.show_sql" value="true" /> 
+			-->
+
+			<!--  JPA está diseñado para manejar las transacciones explícitamente, agrupando operaciones según sea necesario. -->
+
+			<property name="hibernate.format_sql" value="true" />
+			<!--  el SQL generado se mostrará con saltos de línea y sangría para que sea más fácil de leer. -->
+
+			<property name="hibernate.highlight_sql" value="true"/>
+			<!--  el SQL generado se mostrará en colores por consola. -->
+
+
+			<!-- El aislamiento lo decide el SGBD o el pool, JPA solo gestiona transacciones lógicas
+			<property name="hibernate.hikari.transactionIsolation" value="TRANSACTION_REPEATABLE_READ"/>
+			   Nivel de aislamiento considerado para las transacciones:
+    			1: TRANSACTION_READ_UNCOMMITTED
+    			2: TRANSACTION_READ_COMMITTED (valor predeterminado en MySQL)
+	    		4: TRANSACTION_REPEATABLE_READ (nivel predeterminado de MySQL InnoDB)
+    			8: TRANSACTION_SERIALIZABLE
+			-->
+
+			<!-- En Hibernate 6/7 no es necesario especificar ya el dialecto de SGBDs pues lo detecta automáticamente
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" /> 
+			-->
+
+			<!-- Pool de conexiones (HikariCP) -->
+			<property name="hibernate.hikari.poolName" value="HibernateHikariPool"/>
+
+			<property name="hibernate.hikari.minimumIdle" value="2"/>
+			<!--  Número mínimo de conexiones ociosas en el pool -->
+			<property name="hibernate.hikari.maximumPoolSize" value="5"/>
+			<!--  Número máximo de conexiones simultaneas en el pool -->
+
+			<property name="hibernate.hikari.idleTimeout" value="30000"/>
+			<!--  Tiempo máximo de inactividad (en milisegundos) antes de que una conexión sea eliminada -->
+
+			<property name="hibernate.hikari.validationTimeout" value="5000"/>
+			<!--  Tiempo máximo de validación (en milisegundos)-->
+
+			<property name="hibernate.generate_statistics" value="true" />
+			<!--  Se activa la generación de estadísticas detalladas sobre el rendimiento de las operaciones. Penaliza rendimiento -->
+
+			<!-- H2, por defecto, almacena la base de datos persistentemente en un fichero con extensión .mv.db
+			 Cada vez que ejecutas la app:
+			 	-Hibernate lee/actualiza este fichero
+				-Las tablas y registros persisten entre ejecuciones
+			
+				Si prefiero que sólo esté la BD en RAM mientras nuestra app esté abierta:
+					<property name="jakarta.persistence.jdbc.url" value="jdbc:h2:mem:instituto"/>
+			-->
+			<property name="hibernate.hikari.jdbcUrl" value="jdbc:h2:./data/instituto;AUTO_SERVER=TRUE"/>
+			<property name="hibernate.hikari.username" value="sa"/> <!-- System Administrator, usuario por defecto de H2 -->
+			<property name="hibernate.hikari.password" value=""/> <!-- Password vacío = práctica común para bases de desarrollo. Nunca PRODUCCIÓN-->
+
+            <!-- Con hibernate.hbm2ddl.auto = update: Se actualiza automáticamente el esquema de la base de datos 
+			según las entidades JPA cada vez que arranca la aplicación. Cuando la aplicación se inicia, Hibernate:
+				Posibles valores:
+
+                | Valor         | Qué hace                          | ¿Se usa en empresa? |
+                | `none`        | No toca la BBDD                   | ✅ Producción       |
+                | `validate`    | Comprueba que el esquema coincide | ✅ Producción       |
+                | `update`      | Actualiza esquema automáticamente | ⚠️ Desarrollo       |
+                | `create`      | Borra y crea todo                 | ❌ No               |
+                | `create-drop` | Crea al iniciar, borra al cerrar  | ❌ No               |
+
+                📌 En producción: Hibernate NO debe modificar el esquema. Se usan: validate y none
+            -->
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+
+		</properties>
+
+</persistence-unit>
+
+
+</persistence>
