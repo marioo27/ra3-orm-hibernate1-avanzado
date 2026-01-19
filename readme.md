@@ -2,7 +2,7 @@
 
 👨‍🏫 Asignatura: Acceso a Datos
 
-🧑‍💻 Profesor: 
+🧑‍💻 Alumno: Mario García 
 
 📆 Curso: [2025/2026]
 
