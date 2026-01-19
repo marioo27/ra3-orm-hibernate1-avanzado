@@ -17,7 +17,7 @@ import jakarta.persistence.Table;
  * Debemos crear otra clase auxiliar (AlumnoRepositorio o AlumnoDAO) donde implementemos los metodos de interaccion con la clase Alumno.
  * 
  * Para poder gestionar transacciones que aglutinen la invocacion de varios metodos que interactuen con la BD, siempre deberiamos
- * evitar crear y cerrar EntityManager en esos metodos (error de diseño), debemos pasarle al constructor un EntityManager ya creado en 
+ * evitar crear y cerrar EntityManager en esos metodos (error de disenio), debemos pasarle al constructor un EntityManager ya creado en 
  * una clase superior (AlumnoService o Main) que haga labores de orquestador. 
  * 
  * En la capa de servicio es donde se cierran los EntityManager. Usamos uno por cada caso de uso. Porque ahi es donde:
