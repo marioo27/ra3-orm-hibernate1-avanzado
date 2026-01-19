@@ -2,7 +2,7 @@
 
 👨‍🏫 Asignatura: Acceso a Datos
 
-🧑‍💻 Profesor: José Sala Gutiérrez
+🧑‍💻 Profesor: 
 
 📆 Curso: [2025/2026]
 
